@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Optimized Portfolio Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        color: white;
+        min-height: 100vh;
+      }
+      .glass-header {
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+      }
+      .logo {
+        height: 90px;
+      }
+      .results-hero {
+        padding: 20px 20px 10px;
+        position: relative;
+      }
+      .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+      .results-title {
+        font-size: 3em;
+        color: #b0bec5;
+        margin-bottom: 10px;
+      }
+      .results-title .highlight {
+        color: #90a4ae;
+      }
+      .results-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 60px 100px;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: 0 0 30px rgba(0,0,0,0.35);
+        margin: 10px auto;
+        position: relative;
+        z-index: 1;
+      }
+      .metrics-grid {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+      }
+      .metric-card {
+        text-align: center;
+      }
+      .weights-section {
+        margin-top: 10px;
+      }
+      .weights-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .weight-item {
+        text-align: left;
+      }
+      .ticker {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .weight-bar-container {
+        background: #333;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        height: 24px;
+      }
+      .weight-bar {
+        background: #007bff;
+        height: 100%;
+        text-align: right;
+        padding-right: 10px;
+        line-height: 24px;
+        color: white;
+        font-size: 0.9em;
+        white-space: nowrap;
+      }
+      .button-group {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .glow-button {
+        padding: 15px 30px;
+        font-size: 1.1em;
+        color: white;
+        background-color: #00b894;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+      .glow-button:hover {
+        background-color: #019875;
+      }
+      .glass-footer {
+        background: rgba(0, 0, 0, 0.8);
+        text-align: center;
+        padding: 15px 0;
+        font-size: 0.9em;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Cursor Animation -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Header -->
+    <header class="glass-header">
+      <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/3.png') }}" alt="Portfolio Optimizer Logo" class="logo">
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+      <section class="results-hero">
+        <div class="particles" id="particles-js"></div>
+        <div class="hero-content animate__animated animate__fadeInDown">
+          <h1 class="results-title">Portfolio <span class="highlight">Results</span></h1>
+
+          <div class="results-card animate__animated animate__fadeInUp">
+            <h2 class="card-title">Optimized Portfolio</h2>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <h3>Expected Return</h3>
+                <p class="metric-value">{{ returns | round(3) }}</p>
+              </div>
+              <div class="metric-card">
+                <h3>Risk</h3>
+                <p class="metric-value">{{ risk | round(3) }}</p>
+              </div>
+            </div>
+            <div class="weights-section">
+              <h3 class="weights-title">Portfolio Weights</h3>
+              <div class="weights-grid">
+                {% for ticker, weight in weights.items() %}
+                <div class="weight-item">
+                  <div class="ticker">{{ ticker }}</div>
+                  <div class="weight-bar-container">
+                    <div class="weight-bar" style="width: {{ weight * 100 }}%;">
+                      {{ (weight * 100) | round(1) }}%
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="button-group">
+              <a href="/" class="glow-button">Home</a>
+              <a href="/home" class="glow-button">Check Another Portfolio</a>
+              <a href="/download" class="glow-button">Save</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-footer">
+      <p>Powered By Aravind Suresh</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+      // Initialize particles.js with the same config as other pages
+      if (document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+          particles: {
+            number: {
+              value: 80,
+              density: {
+                enable: true,
+                value_area: 800
+              }
+            },
+            color: {
+              value: "#6c5ce7"
+            },
+            shape: {
+              type: "circle",
+              stroke: {
+                width: 0,
+                color: "#000000"
+              },
+              polygon: {
+                nb_sides: 5
+              }
+            },
+            opacity: {
+              value: 0.5,
+              random: false,
+              anim: {
+                enable: false,
+                speed: 1,
+                opacity_min: 0.1,
+                sync: false
+              }
+            },
+            size: {
+              value: 3,
+              random: true,
+              anim: {
+                enable: false,
+                speed: 40,
+                size_min: 0.1,
+                sync: false
+              }
+            },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: "#6c5ce7",
+              opacity: 0.4,
+              width: 1
+            },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: "none",
+              random: false,
+              straight: false,
+              out_mode: "out",
+              bounce: false,
+              attract: {
+                enable: false,
+                rotateX: 600,
+                rotateY: 1200
+              }
+            }
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: {
+                enable: true,
+                mode: "grab"
+              },
+              onclick: {
+                enable: true,
+                mode: "push"
+              },
+              resize: true
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                line_linked: {
+                  opacity: 1
+                }
+              },
+              bubble: {
+                distance: 400,
+                size: 40,
+                duration: 2,
+                opacity: 8,
+                speed: 3
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4
+              },
+              push: {
+                particles_nb: 4
+              },
+              remove: {
+                particles_nb: 2
+              }
+            }
+          },
+          retina_detect: true
+        });
+      }
+    </script>
+  </body>
+  </html>

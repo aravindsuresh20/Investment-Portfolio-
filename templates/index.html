@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ <title>Investment Portfolio Optimizer</title>
+ <link rel="stylesheet" href="static/css/style.css">
+ <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+ <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .glass-header {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px 30px;
+  }
+  .logo {
+    height: 90px;
+  }
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 50px 60px;
+    border-radius: 20px;
+    max-width: 1000px;
+    width: 95%;
+    box-shadow: 0 0 30px rgba(0,0,0,0.35);
+  }
+  .section-title {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #ffffff;
+  }
+  .glow-button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    color: white;
+    background-color: #00b894;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+  .glow-button:hover {
+    background-color: #019875;
+  }
+  .glass-footer {
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    padding: 15px 0;
+    z-index: 2;
+    font-size: 0.9em;
+    color: white;
+  }
+  .select2-container--default .select2-selection--multiple {
+    background-color: white;
+    color: black;
+  }
+  .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e0e0e0;
+    color: black;
+    border: 1px solid #ccc;
+  }
+  .select2-container--default .select2-results__option {
+    color: black;
+    background-color: white;
+  }
+  .optimizer-form {
+    width: 100%;
+  }
+  .custom-select {
+    width: 100% !important;
+  }
+ </style>
+</head>
+<body>
+ <!-- Cursor Animation -->
+ <div class="cursor"></div>
+ <div class="cursor-follower"></div>
+
+ <!-- Header -->
+ <header class="glass-header">
+   <div class="logo-container">
+     <img src="static/images/3.png" alt="Portfolio Optimizer Logo" class="logo">
+   </div>
+ </header>
+
+ <!-- Hero Section with Form -->
+ <main>
+   <section class="hero">
+     <div class="particles" id="particles-js"></div>
+     <div class="hero-content animate__animated animate__bounceInDown">
+       <h2 class="section-title">Stocks to Optimize</h2>
+
+       <!-- Flash Message Block -->
+       {% with messages = get_flashed_messages() %}
+         {% if messages %}
+           <div class="flash-message" style="color: #ff7675; margin-bottom: 20px; font-weight: bold;">
+             {% for message in messages %}
+               <p>{{ message }}</p>
+             {% endfor %}
+           </div>
+         {% endif %}
+       {% endwith %}
+
+       <form method="POST" class="optimizer-form">
+         <select name="tickers" multiple class="js-example-basic-multiple custom-select">
+           {% for name in stock_names %}
+           <option value="{{ name }}">{{ name }}</option>
+           {% endfor %}
+         </select>
+         <br><br>
+         <button type="submit" class="glow-button">Analyze Portfolio</button>
+       </form>
+     </div>
+   </section>
+ </main>
+
+ <!-- Footer -->
+ <footer class="glass-footer">
+   <p>Powered By Aravind Suresh</p>
+ </footer>
+
+ <!-- Scripts -->
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+ <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+ <script src="static/js/main.js"></script>
+ <script>
+   $(document).ready(function() {
+     $('.js-example-basic-multiple').select2({
+       placeholder: "Select stock tickers",
+       allowClear: true,
+       width: '100%'
+     });
+
+     // Hide flash message when a stock is selected
+     $('.js-example-basic-multiple').on('change', function () {
+       if ($(this).val().length > 0) {
+         $('.flash-message').fadeOut();
+       }
+     });
+   });
+ </script>
+</body>
+</html>
